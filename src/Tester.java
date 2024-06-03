@@ -18,7 +18,7 @@ public class Tester {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("Rpg");
-
+        System.out.println("osdhiohasfoh");
         GamePanel gamePanel = new GamePanel();
 
 

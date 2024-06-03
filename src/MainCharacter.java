@@ -10,19 +10,22 @@ public class MainCharacter {
     private String direction;
 
 
-    private int worldY = 1000;
-    private int worldX =1000;
+    public int worldY = 1000;
+    public int worldX =1000;
     private int playerSpeed = 5;
     private Rectangle solidArea;
     private boolean collide;
-    private int playerX, playerY;
+    public int playerX, playerY;
 
-    private final int screenX = gp.screenWidth/2;
-    private final int screenY = gp.screenHeight/2;
+    public final int screenX;
+    public final int screenY;
     public MainCharacter(GamePanel gp, Movement move){
         this.gp = gp;
         this.move = move;
         getSprites();
+        screenX = gp.screenWidth/2 - gp.tileSize;
+        screenY = gp.screenHeight/2 - gp.tileSize;
+
     }
 
     public void update(){
@@ -45,12 +48,12 @@ public class MainCharacter {
             if(!collide){
                 switch (direction){
                     case "u" -> {
-                        worldY += playerSpeed;
+                        worldY -= playerSpeed;
                         break;
                     }
 
                     case "d" -> {
-                        worldY -= playerSpeed;
+                        worldY += playerSpeed;
                         break;
                     }
                     case "r" -> {
@@ -69,12 +72,8 @@ public class MainCharacter {
         }
 
         public void draw(Graphics g2) {
-            BufferedImage image = getImage();
-            try {
-                image = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("player.png"))));
-            } catch (Exception e){
+            BufferedImage image = images;
 
-            }
             g2.drawImage(image, playerX, playerY, 64, 64, null); //draws the sprite
 
 
@@ -82,7 +81,8 @@ public class MainCharacter {
         }
 
         public BufferedImage getImage(){
-            BufferedImage playerImage = null;
+        BufferedImage playerImage = images;
+
             switch (direction) {
                 case "u" -> {
                     return playerImage;
@@ -103,7 +103,7 @@ public class MainCharacter {
 
     public void getSprites(){
         try{
-
+            images = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("player.png"))));
         }catch (Exception e){
 
         }

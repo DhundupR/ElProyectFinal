@@ -22,68 +22,50 @@ public class TileManager {
 
 
     public TileManager(GamePanel gp){
-        System.out.println("No you ");
+
         this.gp = gp;
         tile =  new Tile[16];
-        mapTile = new int[960][580];
-        loadMap();
+        mapTile = new int[gp.worldMaxCol][gp.worldMaxRow];
+
         getTileImage();
+        loadMap();
+
+
     }
 
 
     public void loadMap(){
         try {
-            InputStream is = getClass().getResourceAsStream("src/mainDungeon.txt");
+            InputStream is = getClass().getResourceAsStream("src/mainDungeon");
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             int row = 0; int col = 0;
-            while(row < 960  && col < 580){
+            while(row < gp.worldMaxRow  && col < gp.worldMaxCol){
                 String line = reader.readLine();
-                while(col < 580){
+                while(col < gp.worldMaxCol){
+
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
+
 
 
                     mapTile[col][row] = num;
                     col ++;
                 }
-                if(col == 960){
+                if(col == gp.worldMaxCol){
+
                     col = 0;
                     row++;
+
                 }
             }
             reader.close();
-        }catch (Exception e){
-
-
+        }catch (NullPointerException e ){
+            System.out.println("WWWWWWWHHHHHHHHHHHYYYYYYYYYYYY");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public void loadNewMap(String x){
-        try {
-            InputStream is = getClass().getResourceAsStream(x);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            int row = 0; int col = 0;
-            while(row < 960  && col < 580){
-                String line = reader.readLine();
-                while(col < 580){
-                    String numbers[] = line.split(" ");
-                    int num = Integer.parseInt(numbers[col]);
-
-
-                    mapTile[col][row] = num;
-                    col ++;
-                }
-                if(col == 580){
-                    col = 0;
-                    row++;
-                }
-            }
-            reader.close();
-        }catch (Exception e){
-
-
-        }
-    }
 
 
     public void getTileImage(){
@@ -123,18 +105,20 @@ public class TileManager {
     public void draw(Graphics2D g2) {
         int col =0;
         int row =0;
-        int x = 0;
-        int y = 0;
-        while (col < 580 && row < 960){
+
+        while (col < gp.worldMaxCol  && row < gp.worldMaxRow){
             int num = mapTile[col][row];
-            g2.drawImage(tile[num].image, x, y, gp.tileSize,gp.tileSize,null);
+
+            int worldX = gp.tileSize * col;
+            int worldY = gp.tileSize * row;
+            int screenX = worldX - gp.joe.worldX + gp.joe.screenX;
+            int screenY = worldY - gp.joe.worldY + gp.joe.screenY;
+            g2.drawImage(tile[num].image, screenX, screenY, gp.tileSize,gp.tileSize,null);
             col++;
-            x+= gp.tileSize;
-            if(col == gp.maxScreenCol){
+
+            if(col == gp.worldMaxCol){
                 col = 0;
-                x = 0;
                 row++;
-                y+= gp.tileSize;
             }
         }
 
