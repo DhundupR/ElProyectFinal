@@ -16,8 +16,8 @@ public class GamePanel extends JPanel implements Runnable {
     final int tileSize = scale*origTileSize; // 64
     final int maxScreenCol = 16;
     final int maxScreenRow = 12;
-    final int worldMaxCol = 50;
-    final int worldMaxRow = 50;
+    final int worldMaxCol = 51;
+    final int worldMaxRow = 51;
     public final int worldWidth =  tileSize * worldMaxCol;
     public final int worldHeight = tileSize * worldMaxRow;
 
@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; //Keeps the image running and has uses later like reset screen and other stuff.
 
 
-    public TileManager manager = new TileManager(this);
+    public TileManager manager;
 
 
 
@@ -48,6 +48,7 @@ public class GamePanel extends JPanel implements Runnable {
         this.setDoubleBuffered(true);
         this.addKeyListener(move);
         this.setFocusable(true);
+        this.manager = new TileManager(this);
 
 
 

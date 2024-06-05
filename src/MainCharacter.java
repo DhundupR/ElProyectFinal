@@ -10,8 +10,8 @@ public class MainCharacter {
     private String direction;
 
 
-    public int worldY = 1000;
-    public int worldX =1000;
+    public int worldY = 100;
+    public int worldX =100;
     private int playerSpeed = 5;
     private Rectangle solidArea;
     private boolean collide;
@@ -74,7 +74,7 @@ public class MainCharacter {
         public void draw(Graphics g2) {
             BufferedImage image = images;
 
-            g2.drawImage(image, playerX, playerY, 64, 64, null); //draws the sprite
+            g2.drawImage(image, screenX, screenY, 64, 64, null); //draws the sprite
 
 
 

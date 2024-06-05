@@ -1,12 +1,10 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Objects;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 //https://www.youtube.com/watch?v=FcdrA1LVmGY
 //https://weblog.jamisbuck.org/2011/1/17/maze-generation-aldous-broder-algorithm
@@ -21,49 +19,102 @@ public class TileManager {
 
 
 
-    public TileManager(GamePanel gp){
+    public TileManager(GamePanel gp)  {
 
         this.gp = gp;
         tile =  new Tile[16];
         mapTile = new int[gp.worldMaxCol][gp.worldMaxRow];
 
+
         getTileImage();
         loadMap();
-
-
     }
 
 
-    public void loadMap(){
+    public void loadMap() {
+
         try {
-            InputStream is = getClass().getResourceAsStream("src/mainDungeon");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            int row = 0; int col = 0;
-            while(row < gp.worldMaxRow  && col < gp.worldMaxCol){
-                String line = reader.readLine();
-                while(col < gp.worldMaxCol){
+            File myFile = new File("src\\mainDungeon.txt");
+            Scanner fileScanner = new Scanner(myFile);
+            int row = 0;
+            int col = 0;
+            int spaces = 0;
 
-                    String numbers[] = line.split(" ");
-                    int num = Integer.parseInt(numbers[col]);
+            String temp =  "";
+            int total = 0;
+            while (fileScanner.hasNext()) {
 
-
-
-                    mapTile[col][row] = num;
-                    col ++;
+                String data = fileScanner.nextLine();
+                for(int i = 0; i < data.length(); i++) {
+                    if(data.charAt(i) == ' ') spaces++;
                 }
-                if(col == gp.worldMaxCol){
 
+
+
+
+                while(data.contains(" ")){
+                    temp = data.substring(0,data.indexOf(" ") );
+                    data = data.substring(data.indexOf(" ") + 1);
+                    if (temp != " ") {
+                        total += Integer.parseInt(temp);
+                    }
+                    mapTile[col][row] = total;
+                    col++;
+                    total=0;
+                }
                     col = 0;
                     row++;
 
-                }
+
+
+
+
+
+
+
+
+
+
             }
-            reader.close();
-        }catch (NullPointerException e ){
-            System.out.println("WWWWWWWHHHHHHHHHHHYYYYYYYYYYYY");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch(IOException exception) {
+            System.out.println(exception.getMessage());
         }
+
+
+
+
+
+
+
+//        try {
+//                InputStream is = getClass().getResourceAsStream("src\\mainDungeon.txt");
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//                int row = 0;
+//                int col = 0;
+//                while (row < gp.worldMaxRow && col < gp.worldMaxCol) {
+//                    String line = reader.readLine();
+//                    while (col < gp.worldMaxCol) {
+//
+//                        String numbers[] = line.split(" ");
+//                        int num = Integer.parseInt(numbers[col]);
+//
+//
+//                        mapTile[col][row] = num;
+//                        col++;
+//                    }
+//                    if (col == gp.worldMaxCol) {
+//
+//                        col = 0;
+//                        row++;
+//
+//                    }
+//                }
+//                reader.close();
+//            }catch (Exception e){
+//                System.out.println(e.getMessage());
+//
+//            }
+
     }
 
 
