@@ -4,31 +4,44 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class MainCharacter {
-    public BufferedImage images;
+    public boolean collide = false;
+    public BufferedImage images,up1,right1,left1,down1;
     private GamePanel gp;
     private Movement move;
-    private String direction;
+    public String direction = "r";
 
 
     public int worldY = 100;
     public int worldX =100;
-    private int playerSpeed = 5;
-    private Rectangle solidArea;
-    private boolean collide;
+    private int playerSpeed = 10;
+    public Rectangle solidArea;
+
+
     public int playerX, playerY;
+
 
     public final int screenX;
     public final int screenY;
     public MainCharacter(GamePanel gp, Movement move){
         this.gp = gp;
         this.move = move;
+
         getSprites();
+        getImage();
+        solidArea = playerRect();
         screenX = gp.screenWidth/2 - gp.tileSize;
         screenY = gp.screenHeight/2 - gp.tileSize;
 
     }
+    public Rectangle playerRect() {
+        Rectangle rect = new Rectangle(16,16,gp.tileSize/2,gp.tileSize/2);
+        return rect;
+    }
+
+
 
     public void update(){
+
         if(move.upPressed == true || move.downPressed ==true || move.rightPressed == true|| move.leftPressed == true){
             if(move.upPressed) {
                 direction = "u";
@@ -42,8 +55,9 @@ public class MainCharacter {
             else if(move.leftPressed) {
                 direction = "l";
             }
-
             collide = false;
+
+           gp.collision.tileChecker(this);
 
             if(!collide){
                 switch (direction){
@@ -72,7 +86,7 @@ public class MainCharacter {
         }
 
         public void draw(Graphics g2) {
-            BufferedImage image = images;
+            BufferedImage image = getImage();
 
             g2.drawImage(image, screenX, screenY, 64, 64, null); //draws the sprite
 
@@ -85,16 +99,16 @@ public class MainCharacter {
 
             switch (direction) {
                 case "u" -> {
-                    return playerImage;
+                    return up1;
                 }
                 case "d" -> {
-                    return playerImage;
+                    return down1;
                 }
                 case "r" -> {
-                    return playerImage;
+                    return right1;
                 }
                 case "l" -> {
-                    return playerImage;
+                    return left1;
                 }
             }
             return null;
@@ -104,6 +118,11 @@ public class MainCharacter {
     public void getSprites(){
         try{
             images = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("player.png"))));
+            up1 = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/up1.png"))));
+            right1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/right1.png"))));
+            left1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/left1.png"))));
+            down1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/down1.png"))));
+
         }catch (Exception e){
 
         }

@@ -26,6 +26,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public Movement move = new Movement();
     public MainCharacter joe =new MainCharacter(this,move);
+    public CollisionSys collision = new CollisionSys(this);
 
 
 
