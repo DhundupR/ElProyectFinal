@@ -5,16 +5,21 @@ import java.util.Objects;
 
 public class MainCharacter {
     public boolean collide = false;
-    public BufferedImage images,up1,right1,left1,down1;
+    public BufferedImage images,up1,right1,left1,down1,up2,right2,left2,down2;
     private GamePanel gp;
     private Movement move;
     public String direction = "r";
+    public int defaultX,defaultY;
+    private final int maxHealth = 5;
+    public int currentHp = maxHealth;
 
 
     public int worldY = 100;
     public int worldX =100;
-    private int playerSpeed = 10;
+    public int playerSpeed = 8;
     public Rectangle solidArea;
+    public int sprite = 1;
+    public int spriteTimer = 0;
 
 
     public int playerX, playerY;
@@ -29,18 +34,23 @@ public class MainCharacter {
         getSprites();
         getImage();
         solidArea = playerRect();
+        defaultX = solidArea.x;
+        defaultY = solidArea.y;;
         screenX = gp.screenWidth/2 - gp.tileSize;
         screenY = gp.screenHeight/2 - gp.tileSize;
 
     }
     public Rectangle playerRect() {
-        Rectangle rect = new Rectangle(16,16,gp.tileSize/2,gp.tileSize/2);
+        Rectangle rect = new Rectangle(8,16,32,32);
         return rect;
     }
 
 
 
     public void update(){
+
+
+        spriteTimer ++;
 
         if(move.upPressed == true || move.downPressed ==true || move.rightPressed == true|| move.leftPressed == true){
             if(move.upPressed) {
@@ -58,6 +68,10 @@ public class MainCharacter {
             collide = false;
 
            gp.collision.tileChecker(this);
+           int index = gp.collision.entityCollision(gp.joe,gp.mobList);
+           contactMon(index);
+           System.out.println(currentHp);
+
 
             if(!collide){
                 switch (direction){
@@ -81,7 +95,22 @@ public class MainCharacter {
 
                 }
             }
+            if(spriteTimer  > 10){
+                if(sprite == 1){
+                    sprite =2;
+                } else {
+                    sprite =1;
+                }
+                spriteTimer=0;
+            }
 
+
+            }
+        }
+
+        public void contactMon(int index){
+            if(index != -1){
+                currentHp -= 1;
             }
         }
 
@@ -96,19 +125,35 @@ public class MainCharacter {
 
         public BufferedImage getImage(){
         BufferedImage playerImage = images;
-
-            switch (direction) {
-                case "u" -> {
-                    return up1;
+            if(sprite == 1) {
+                switch (direction) {
+                    case "u" -> {
+                        return up1;
+                    }
+                    case "d" -> {
+                        return down1;
+                    }
+                    case "r" -> {
+                        return right1;
+                    }
+                    case "l" -> {
+                        return left1;
+                    }
                 }
-                case "d" -> {
-                    return down1;
-                }
-                case "r" -> {
-                    return right1;
-                }
-                case "l" -> {
-                    return left1;
+            }else if(sprite ==2){
+                switch (direction) {
+                    case "u" -> {
+                        return up2;
+                    }
+                    case "d" -> {
+                        return down2;
+                    }
+                    case "r" -> {
+                        return right2;
+                    }
+                    case "l" -> {
+                        return left2;
+                    }
                 }
             }
             return null;
@@ -122,6 +167,10 @@ public class MainCharacter {
             right1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/right1.png"))));
             left1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/left1.png"))));
             down1 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/down1.png"))));
+            up2 = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/up2.png"))));
+            right2 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/right2.png"))));
+            left2 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/left2.png"))));
+            down2 =  (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("playerSprites/down2.png"))));
 
         }catch (Exception e){
 

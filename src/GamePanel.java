@@ -7,10 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 
 public class GamePanel extends JPanel implements Runnable {
+    public bats[] mobList= new bats[10];
     final int origTileSize = 16;
     final int scale = 4;
     final int tileSize = scale*origTileSize; // 64
@@ -27,6 +31,7 @@ public class GamePanel extends JPanel implements Runnable {
     public Movement move = new Movement();
     public MainCharacter joe =new MainCharacter(this,move);
     public CollisionSys collision = new CollisionSys(this);
+    public HealthBar health = new HealthBar(this);
 
 
 
@@ -40,6 +45,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     public TileManager manager;
+    public worldAdder world;
 
 
 
@@ -50,6 +56,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.addKeyListener(move);
         this.setFocusable(true);
         this.manager = new TileManager(this);
+        world = new worldAdder(this);
+        world.setMonster();
+
 
 
 
@@ -69,7 +78,14 @@ public class GamePanel extends JPanel implements Runnable {
         g2 = (Graphics2D) g; //extension of graphic (has special functions)
 
         manager.draw(g2);
+        for(int i = 0; i < mobList.length; i++){
+            if(mobList[i] != null){
+                mobList[i].draw(g2);
+            }
+        }
         joe.draw(g2);
+        health.draw(g2);
+
 
 
 
@@ -119,6 +135,13 @@ public class GamePanel extends JPanel implements Runnable {
 
                // Add update code for main Player
                 joe.update();
+                for(int i = 0; i < mobList.length; i++){
+                    if(mobList[i] != null){
+                        mobList[i].update();
+                    }
+                }
+                health.update();
+
 
                 repaint();
                 timeCheck--; //resets back to zero!

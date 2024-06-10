@@ -3,6 +3,7 @@ import javax.swing.*;
 public class WelcomeFrame {
     private WelcomePanel panel;
 
+
     public WelcomeFrame() {
         JFrame frame = new JFrame("Welcome");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -18,4 +19,7 @@ public class WelcomeFrame {
 
         // no thread needed here since we aren't doing animation for this frame/panel
     }
+
+
+
 }
