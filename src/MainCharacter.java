@@ -12,6 +12,8 @@ public class MainCharacter {
     public int defaultX,defaultY;
     private final int maxHealth = 5;
     public int currentHp = maxHealth;
+    public int godTimer;
+    public boolean god = false;
 
 
     public int worldY = 100;
@@ -20,6 +22,7 @@ public class MainCharacter {
     public Rectangle solidArea;
     public int sprite = 1;
     public int spriteTimer = 0;
+    public boolean attacked = false;
 
 
     public int playerX, playerY;
@@ -27,6 +30,7 @@ public class MainCharacter {
 
     public final int screenX;
     public final int screenY;
+    public Slash slash = new Slash(gp,this);
     public MainCharacter(GamePanel gp, Movement move){
         this.gp = gp;
         this.move = move;
@@ -52,6 +56,7 @@ public class MainCharacter {
 
         spriteTimer ++;
 
+
         if(move.upPressed == true || move.downPressed ==true || move.rightPressed == true|| move.leftPressed == true){
             if(move.upPressed) {
                 direction = "u";
@@ -67,10 +72,19 @@ public class MainCharacter {
             }
             collide = false;
 
+
            gp.collision.tileChecker(this);
            int index = gp.collision.entityCollision(gp.joe,gp.mobList);
+
+           if(attacked){
+
+               int indexAttack = gp.collision.slashAttack(gp.joe, gp.mobList);
+               if(indexAttack != -1) {
+                   gp.mobList[indexAttack].attacked();
+               }
+           }
+            attacked = false;
            contactMon(index);
-           System.out.println(currentHp);
 
 
             if(!collide){
@@ -106,18 +120,36 @@ public class MainCharacter {
 
 
             }
+
+        if(god =true){
+            godTimer++;
+
+
+            if(godTimer > 10) {
+
+                godTimer = 0;
+                god = false;
+            }
+        }
         }
 
         public void contactMon(int index){
-            if(index != -1){
+            if(index != -1 && currentHp != 0 && god == false){
+
                 currentHp -= 1;
+                god = true;
             }
         }
 
         public void draw(Graphics g2) {
             BufferedImage image = getImage();
 
-            g2.drawImage(image, screenX, screenY, 64, 64, null); //draws the sprite
+            g2.drawImage(image, screenX, screenY, 64, 64, null);
+            if(move.basicAttack1) {
+                attacked=true;
+                slash.draw(g2,screenX,screenY);
+                //draws the sprite
+            }
 
 
 

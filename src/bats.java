@@ -16,7 +16,7 @@ public class bats {
     public int actionTimer= 0;
     public int spriteTimer = 0;
     public int sprite = 1;
-    public int maxHp = 4;
+    public int maxHp = 3;
     public int currentHp;
     public boolean collide;
     public int defaultX, defaultY;
@@ -35,6 +35,7 @@ public class bats {
     }
     public void draw(Graphics g2){
 
+
         int screenX = worldX - gp.joe.worldX + gp.joe.screenX;
         int screenY = worldY - gp.joe.worldY + gp.joe.screenY;
         BufferedImage image = getImage();
@@ -44,6 +45,10 @@ public class bats {
     public Rectangle batRect() {
         Rectangle rect = new Rectangle(3,8,32,32);
         return rect;
+    }
+
+    public void attacked(){
+        currentHp --;
     }
 
     public void update(){

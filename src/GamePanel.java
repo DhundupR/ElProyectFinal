@@ -79,7 +79,11 @@ public class GamePanel extends JPanel implements Runnable {
 
         manager.draw(g2);
         for(int i = 0; i < mobList.length; i++){
+
             if(mobList[i] != null){
+                if(mobList[i].currentHp == 0){
+                    mobList[i] = null;
+                }
                 mobList[i].draw(g2);
             }
         }

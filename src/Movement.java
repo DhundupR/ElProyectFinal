@@ -43,7 +43,7 @@ public class Movement  implements KeyListener {
             rightPressed = true;
 
         }
-        if(code==KeyEvent.VK_1){
+        if(code==KeyEvent.VK_Q){
             basicAttack1=true;
         }
         if(code==KeyEvent.VK_2){
@@ -78,6 +78,8 @@ public class Movement  implements KeyListener {
 
             rightPressed = false;
 
+        }if(code==KeyEvent.VK_Q){
+            basicAttack1=false;
         }
 
 

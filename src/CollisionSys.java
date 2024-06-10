@@ -185,6 +185,56 @@ public class CollisionSys {
 
     }
 
+    public int slashAttack(MainCharacter joe, bats[] monster){
+        int index = -1;for(int i = 0; i < monster.length; i ++){
+            if(monster[i] != null){
+                joe.slash.slashArea.x = joe.slash.worldX + joe.slash.slashArea.x;
+                joe.slash.slashArea.y =  joe.slash.worldY+ joe.slash.slashArea.y;
+
+                monster[i].rec.x = monster[i].worldX + monster[i].rec.x;
+                monster[i].rec.y = monster[i].worldY + monster[i].rec.y;
+
+
+                switch (joe.direction) { //chooses sprite based of the current direction () gets changes in update()
+                    case "u" -> {
+                        joe.solidArea.y -= joe.playerSpeed;
+                    }
+
+                    case "d" -> {
+                        joe.solidArea.y += joe.playerSpeed;
+
+                    }
+                    case "l" -> {
+                        joe.solidArea.x -= joe.playerSpeed;
+
+                    }
+                    case "r" -> {
+                        joe.solidArea.x += joe.playerSpeed;
+                    }
+
+
+
+
+                }
+                if (joe.slash.slashArea.intersects(monster[i].rec)){
+
+                    joe.attacked = true;
+                    index=i;
+                }
+
+                joe.slash.slashArea.x = joe.slash.defaultX;
+                joe.slash.slashArea.y = joe.slash.defaultY;
+                monster[i].rec.x = monster[i].defaultX;
+                monster[i].rec.y = monster[i].defaultY;
+
+            }
+            System.out.println(index);
+
+
+        }
+        return index;
+    }
+
     public int entityCollision(MainCharacter joe, bats[] monster){
         int index = -1;
         for(int i = 0; i < monster.length; i ++){
