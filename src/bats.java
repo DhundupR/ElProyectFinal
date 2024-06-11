@@ -53,6 +53,7 @@ public class bats {
 
     public void update(){
 
+
         action();
 
         collide = false;
@@ -94,6 +95,7 @@ public class bats {
     }
 
     public void action(){
+
         actionTimer ++;
         if(actionTimer > 70){
             int random = (int)(Math.random()* 99) + 1;

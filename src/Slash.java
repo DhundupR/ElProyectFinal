@@ -25,7 +25,7 @@ public class Slash {
     }
 
     public Rectangle SlashRect() {
-        Rectangle rect = new Rectangle(40,40,50,50);
+        Rectangle rect = new Rectangle(0,0,32,32);
         return rect;
     }
     public void draw(Graphics g2,int x, int y){

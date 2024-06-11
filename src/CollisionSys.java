@@ -185,55 +185,7 @@ public class CollisionSys {
 
     }
 
-    public int slashAttack(MainCharacter joe, bats[] monster){
-        int index = -1;for(int i = 0; i < monster.length; i ++){
-            if(monster[i] != null){
-                joe.slash.slashArea.x = joe.slash.worldX + joe.slash.slashArea.x;
-                joe.slash.slashArea.y =  joe.slash.worldY+ joe.slash.slashArea.y;
 
-                monster[i].rec.x = monster[i].worldX + monster[i].rec.x;
-                monster[i].rec.y = monster[i].worldY + monster[i].rec.y;
-
-
-                switch (joe.direction) { //chooses sprite based of the current direction () gets changes in update()
-                    case "u" -> {
-                        joe.solidArea.y -= joe.playerSpeed;
-                    }
-
-                    case "d" -> {
-                        joe.solidArea.y += joe.playerSpeed;
-
-                    }
-                    case "l" -> {
-                        joe.solidArea.x -= joe.playerSpeed;
-
-                    }
-                    case "r" -> {
-                        joe.solidArea.x += joe.playerSpeed;
-                    }
-
-
-
-
-                }
-                if (joe.slash.slashArea.intersects(monster[i].rec)){
-
-                    joe.attacked = true;
-                    index=i;
-                }
-
-                joe.slash.slashArea.x = joe.slash.defaultX;
-                joe.slash.slashArea.y = joe.slash.defaultY;
-                monster[i].rec.x = monster[i].defaultX;
-                monster[i].rec.y = monster[i].defaultY;
-
-            }
-            System.out.println(index);
-
-
-        }
-        return index;
-    }
 
     public int entityCollision(MainCharacter joe, bats[] monster){
         int index = -1;
@@ -275,6 +227,150 @@ public class CollisionSys {
                     joe.solidArea.y = joe.defaultY;
                     monster[i].rec.x = monster[i].defaultX;
                     monster[i].rec.y = monster[i].defaultY;
+
+            }
+
+
+        }
+        return index;
+    }
+
+    public int entityCollision(MainCharacter joe, Chest[] chests){
+        int index = -1;
+        for(int i = 0; i < chests.length; i ++){
+            if(chests[i] != null){
+                joe.solidArea.x =  (joe.worldX + joe.solidArea.x);
+                joe.solidArea.y =  (joe.worldY + joe.solidArea.y);
+
+                chests[i].rec.x = chests[i].worldX + chests[i].rec.x;
+                chests[i].rec.y = chests[i].worldY + chests[i].rec.y;
+
+                switch (joe.direction) { //chooses sprite based of the current direction () gets changes in update()
+                    case "u" -> {
+                        joe.solidArea.y -= joe.playerSpeed;
+                    }
+
+                    case "d" -> {
+                        joe.solidArea.y += joe.playerSpeed;
+
+                    }
+                    case "l" -> {
+                        joe.solidArea.x -= joe.playerSpeed;
+
+                    }
+                    case "r" -> {
+                        joe.solidArea.x += joe.playerSpeed;
+                    }
+
+
+
+
+                }
+                if (joe.solidArea.intersects(chests[i].rec)){
+                    joe.collide = true;
+                    index=i;
+                }
+
+                joe.solidArea.x = joe.defaultX;
+                joe.solidArea.y = joe.defaultY;
+                chests[i].rec.x = chests[i].defaultX;
+                chests[i].rec.y = chests[i].defaultY;
+
+            }
+
+
+        }
+        return index;
+    }
+
+    public int entityCollision(MainCharacter joe, Key[] keys){
+        int index = -1;
+        for(int i = 0; i < keys.length; i ++){
+            if(keys[i] != null){
+                joe.solidArea.x =  (joe.worldX + joe.solidArea.x);
+                joe.solidArea.y =  (joe.worldY + joe.solidArea.y);
+
+                keys[i].rec.x = keys[i].worldX + keys[i].rec.x;
+                keys[i].rec.y = keys[i].worldY + keys[i].rec.y;
+
+                switch (joe.direction) { //chooses sprite based of the current direction () gets changes in update()
+                    case "u" -> {
+                        joe.solidArea.y -= joe.playerSpeed;
+                    }
+
+                    case "d" -> {
+                        joe.solidArea.y += joe.playerSpeed;
+
+                    }
+                    case "l" -> {
+                        joe.solidArea.x -= joe.playerSpeed;
+
+                    }
+                    case "r" -> {
+                        joe.solidArea.x += joe.playerSpeed;
+                    }
+
+
+
+
+                }
+                if (joe.solidArea.intersects(keys[i].rec)){
+                    joe.collide = true;
+                    index=i;
+                }
+
+                joe.solidArea.x = joe.defaultX;
+                joe.solidArea.y = joe.defaultY;
+                keys[i].rec.x = keys[i].defaultX;
+                keys[i].rec.y = keys[i].defaultY;
+
+            }
+
+
+        }
+        return index;
+    }
+
+    public int entityCollision(MainCharacter joe, Door[] doors){
+        int index = -1;
+        for(int i = 0; i < doors.length; i ++){
+            if(doors[i] != null){
+                joe.solidArea.x =  (joe.worldX + joe.solidArea.x);
+                joe.solidArea.y =  (joe.worldY + joe.solidArea.y);
+
+                doors[i].rec.x = doors[i].worldX + doors[i].rec.x;
+                doors[i].rec.y = doors[i].worldY + doors[i].rec.y;
+
+                switch (joe.direction) { //chooses sprite based of the current direction () gets changes in update()
+                    case "u" -> {
+                        joe.solidArea.y -= joe.playerSpeed;
+                    }
+
+                    case "d" -> {
+                        joe.solidArea.y += joe.playerSpeed;
+
+                    }
+                    case "l" -> {
+                        joe.solidArea.x -= joe.playerSpeed;
+
+                    }
+                    case "r" -> {
+                        joe.solidArea.x += joe.playerSpeed;
+                    }
+
+
+
+
+                }
+                if (joe.solidArea.intersects(doors[i].rec)){
+                    joe.collide = true;
+                    index=i;
+                }
+
+                joe.solidArea.x = joe.defaultX;
+                joe.solidArea.y = joe.defaultY;
+                doors[i].rec.x = doors[i].defaultX;
+                doors[i].rec.y = doors[i].defaultY;
 
             }
 

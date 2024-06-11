@@ -134,6 +134,10 @@ public class TileManager {
             tile[1].image = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("tile/floor.png"))));
             tile[1].collision = false;
 
+            tile[2] = new Tile();
+            tile[2].image = (ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream("tile/black.png"))));
+            tile[2].collision = true;
+
 
 
 

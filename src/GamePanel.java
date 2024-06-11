@@ -14,7 +14,11 @@ import java.util.Objects;
 
 
 public class GamePanel extends JPanel implements Runnable {
-    public bats[] mobList= new bats[10];
+    public bats[] mobList= new bats[80];
+    public Chest[] chestList = new Chest[20];
+    public Key[] keys = new Key[5];
+
+    public Door[] doors = new Door[5];
     final int origTileSize = 16;
     final int scale = 4;
     final int tileSize = scale*origTileSize; // 64
@@ -58,6 +62,9 @@ public class GamePanel extends JPanel implements Runnable {
         this.manager = new TileManager(this);
         world = new worldAdder(this);
         world.setMonster();
+        world.setChest();
+        world.setKeys();
+        world.addDoor();
 
 
 
@@ -66,6 +73,26 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     }
+
+    public void endGameScreen(){
+        int x;
+        int y;
+        g2.setColor(new Color(0,0,0,150));
+        g2.fillRect(0,0,screenWidth,screenHeight);
+
+        String text = "Game Over";
+
+        g2.setColor(Color.black);
+        x = 1000;
+        y= tileSize *5;
+
+        g2.drawString(text,x,y);
+
+        g2.setColor(Color.white);
+
+    }
+
+
 
 
 
@@ -78,27 +105,54 @@ public class GamePanel extends JPanel implements Runnable {
         g2 = (Graphics2D) g; //extension of graphic (has special functions)
 
         manager.draw(g2);
-        for(int i = 0; i < mobList.length; i++){
+        if(joe.currentHp == 0 || doors[0] == null){
+            endGameScreen();
+        } else {
 
-            if(mobList[i] != null){
-                if(mobList[i].currentHp == 0){
-                    mobList[i] = null;
+            for (int i = 0; i < mobList.length; i++) {
+
+                if (mobList[i] != null) {
+                    if (mobList[i].currentHp == 0) {
+                        mobList[i] = null;
+                    }
+                    mobList[i].draw(g2);
                 }
-                mobList[i].draw(g2);
             }
+
+            for (int i = 0; i < chestList.length; i++) {
+
+                if (chestList[i] != null) {
+                    if (chestList[i].currentUses == 0) {
+                        chestList[i] = null;
+                    }
+                    chestList[i].draw(g2);
+                }
+            }
+
+            for (int i = 0; i < keys.length; i++) {
+
+                if (keys[i] != null) {
+                    if (keys[i].currentUses == 0) {
+                        keys[i] = null;
+                    }
+                    keys[i].draw(g2);
+                }
+            }
+
+            for (int i = 0; i < doors.length; i++) {
+
+                if (doors[i] != null) {
+                    if (doors[i].currentUses == 0) {
+                        doors[i] = null;
+                    }
+                    doors[i].draw(g2);
+                }
+            }
+            joe.draw(g2);
+            health.draw(g2);
+
+
         }
-        joe.draw(g2);
-        health.draw(g2);
-
-
-
-
-
-
-
-
-
-
     }
 
 

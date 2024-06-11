@@ -23,6 +23,9 @@ public class MainCharacter {
     public int sprite = 1;
     public int spriteTimer = 0;
     public boolean attacked = false;
+    public boolean glitchedAtk = false;
+
+    public boolean hasKey = false;
 
 
     public int playerX, playerY;
@@ -48,13 +51,120 @@ public class MainCharacter {
         Rectangle rect = new Rectangle(8,16,32,32);
         return rect;
     }
+    public void attacking(){
+        int curentWorldX = worldX;
+        System.out.println(worldX);
+        int curentWorldY = worldY;
+
+        int solidWidth = solidArea.width;
+        int solidHeight = solidArea.height;
+
+        switch (direction) {
+            case "u" -> {
+                worldY -= slash.slashArea.height;
+                break;
+            }
+
+            case "d" -> {
+                worldY += slash.slashArea.height;
+                break;
+            }
+            case "r" -> {
+                worldX += slash.slashArea.width;
+                break;
+            }
+            case "l" -> {
+                worldX -= slash.slashArea.width;
+                break;
+            }
+        }
+
+
+            solidArea.width = slash.slashArea.width;
+            solidArea.height = slash.slashArea.height;
+
+            int index = gp.collision.entityCollision(this, gp.mobList);
+            worldX = curentWorldX ;
+            worldY = curentWorldY;
+            solidArea.width = solidWidth;
+            solidArea.height = solidHeight;
+            if(index != -1){
+
+                attackMob(index);
+
+            }
+            attacked = false;
+        }
+
+    public void GLITCHEDattacking(){
+        int curentWorldX = worldX;
+        int curentWorldY = worldY;
+
+        int solidWidth = solidArea.width;
+        int solidHeight = solidArea.height;
+
+        switch (direction) {
+            case "u" -> {
+                curentWorldY -= slash.slashArea.height;
+                break;
+            }
+
+            case "d" -> {
+                curentWorldY += slash.slashArea.height;
+                break;
+            }
+            case "r" -> {
+                curentWorldX += slash.slashArea.width;
+                break;
+            }
+            case "l" -> {
+                curentWorldX -= slash.slashArea.width;
+                break;
+            }
+        }
+
+
+        solidArea.width = slash.slashArea.width;
+        solidArea.height = slash.slashArea.height;
+
+        int index = gp.collision.entityCollision(this, gp.mobList);
+        worldX = curentWorldX ;
+        System.out.println("gl");
+        worldY = curentWorldY;
+        solidArea.width = solidWidth;
+        solidArea.height = solidHeight;
+        if(index != -1){
+
+            attackMob(index);
+
+        }
+        attacked = false;
+    }
+
+
+    public void attackMob(int index){
+        gp.mobList[index].attacked();
+    }
 
 
 
     public void update(){
+        System.out.println("Current WorldX = " + worldX + " current worldY = " + worldY);
 
 
         spriteTimer ++;
+
+        if(attacked ){
+            attacking();
+        }
+
+        if(glitchedAtk ){
+            GLITCHEDattacking();
+        }
+
+
+        attacked = false;
+        glitchedAtk = false;
 
 
         if(move.upPressed == true || move.downPressed ==true || move.rightPressed == true|| move.leftPressed == true){
@@ -76,14 +186,16 @@ public class MainCharacter {
            gp.collision.tileChecker(this);
            int index = gp.collision.entityCollision(gp.joe,gp.mobList);
 
-           if(attacked){
 
-               int indexAttack = gp.collision.slashAttack(gp.joe, gp.mobList);
-               if(indexAttack != -1) {
-                   gp.mobList[indexAttack].attacked();
-               }
-           }
-            attacked = false;
+           int chestIndex = gp.collision.entityCollision(this, gp.chestList);
+
+            int keyIndex = gp.collision.entityCollision(this, gp.keys);
+
+            int doorIndex = gp.collision.entityCollision(this, gp.doors);
+
+            contactDoor(doorIndex);
+            contactKeys(keyIndex);
+            contactChest(chestIndex);
            contactMon(index);
 
 
@@ -133,6 +245,41 @@ public class MainCharacter {
         }
         }
 
+        public void contactDoor(int index){
+            if(index != -1 && hasKey){
+                gp.doors[index].used();
+            }
+        }
+
+        public void contactKeys(int index){
+        if(index != -1) {
+            gp.keys[index].used();
+            hasKey = true;
+        }
+        }
+
+        public void contactChest(int index){
+        if(index != -1){
+            gp.chestList[index].used();
+
+            int random = (int)(Math.random()* 99) + 1;
+            if(random <= 25){
+                playerSpeed += 5;
+            }else if(random <= 50){
+               if(currentHp < 5) {
+                   currentHp++;
+               }
+            }else if(random <= 75){
+                if(currentHp > 1)
+                    currentHp--;
+
+            }else {
+
+            }
+
+        }
+        }
+
         public void contactMon(int index){
             if(index != -1 && currentHp != 0 && god == false){
 
@@ -149,6 +296,12 @@ public class MainCharacter {
                 attacked=true;
                 slash.draw(g2,screenX,screenY);
                 //draws the sprite
+            }
+
+            if(move.basicAttack2) {
+                glitchedAtk=true;
+                slash.draw(g2,screenX,screenY);
+
             }
 
 

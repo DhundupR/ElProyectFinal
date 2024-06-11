@@ -80,6 +80,8 @@ public class Movement  implements KeyListener {
 
         }if(code==KeyEvent.VK_Q){
             basicAttack1=false;
+        }if(code==KeyEvent.VK_2){
+            basicAttack2=false;
         }
 
 
