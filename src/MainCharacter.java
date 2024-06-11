@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 public class MainCharacter {
+    public int timer = 0;
     public boolean collide = false;
     public BufferedImage images,up1,right1,left1,down1,up2,right2,left2,down2;
     private GamePanel gp;
@@ -16,8 +17,8 @@ public class MainCharacter {
     public boolean god = false;
 
 
-    public int worldY = 100;
-    public int worldX =100;
+    public int worldY = 2852;
+    public int worldX = 228;
     public int playerSpeed = 8;
     public Rectangle solidArea;
     public int sprite = 1;
@@ -122,6 +123,9 @@ public class MainCharacter {
                 break;
             }
         }
+        if(currentHp < 5){
+            currentHp ++;
+        }
 
 
         solidArea.width = slash.slashArea.width;
@@ -129,7 +133,7 @@ public class MainCharacter {
 
         int index = gp.collision.entityCollision(this, gp.mobList);
         worldX = curentWorldX ;
-        System.out.println("gl");
+
         worldY = curentWorldY;
         solidArea.width = solidWidth;
         solidArea.height = solidHeight;
@@ -149,7 +153,7 @@ public class MainCharacter {
 
 
     public void update(){
-        System.out.println("Current WorldX = " + worldX + " current worldY = " + worldY);
+
 
 
         spriteTimer ++;
@@ -289,13 +293,15 @@ public class MainCharacter {
         }
 
         public void draw(Graphics g2) {
+
+
             BufferedImage image = getImage();
 
             g2.drawImage(image, screenX, screenY, 64, 64, null);
-            if(move.basicAttack1) {
+            if(move.basicAttack1 ) {
                 attacked=true;
                 slash.draw(g2,screenX,screenY);
-                //draws the sprite
+
             }
 
             if(move.basicAttack2) {

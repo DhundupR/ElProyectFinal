@@ -5,6 +5,7 @@ import java.nio.Buffer;
 import java.util.Objects;
 
 public class Slash {
+    public int timer = 0;
     public BufferedImage upSlash,downSlash,leftSlash,rightSlash;
 
 
@@ -29,21 +30,26 @@ public class Slash {
         return rect;
     }
     public void draw(Graphics g2,int x, int y){
-         worldX = x;
-         worldY = y;
-        if(joe.direction.equals("u")){
-            worldY -= 30;
-            g2.drawImage(getImage(), worldX, worldY, 45, 20, null);
-        } else if(joe.direction.equals("d")){
-            worldY += 80;
-            g2.drawImage(getImage(), worldX, worldY, 45, 20, null);
-        }else if(joe.direction.equals("l")){
-            worldX -= 30;
-            g2.drawImage(getImage(), worldX, worldY, 20, 45, null);
-        }else if(joe.direction.equals("r")){
-            worldX += 80;
-            g2.drawImage(getImage(), worldX, worldY, 20, 45, null);
+        timer++;
+        if(timer < 10) {
+            worldX = x;
+            worldY = y;
+            if (joe.direction.equals("u")) {
+                worldY -= 30;
+                g2.drawImage(getImage(), worldX, worldY, 45, 20, null);
+            } else if (joe.direction.equals("d")) {
+                worldY += 80;
+                g2.drawImage(getImage(), worldX, worldY, 45, 20, null);
+            } else if (joe.direction.equals("l")) {
+                worldX -= 30;
+                g2.drawImage(getImage(), worldX, worldY, 20, 45, null);
+            } else if (joe.direction.equals("r")) {
+                worldX += 80;
+                g2.drawImage(getImage(), worldX, worldY, 20, 45, null);
+            }
+            timer = 0;
         }
+
 
 
 
